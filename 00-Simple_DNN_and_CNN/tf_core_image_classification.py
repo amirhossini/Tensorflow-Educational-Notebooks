@@ -1,8 +1,11 @@
 """
-Copyright: tensorflow.org
+Original Version from tensorflow.org
 Available @ https://www.tensorflow.org/tutorials/images/classification
-Recreation in tensorflow 2.5: Amir Hossini
- -
+
+Recreated in tensorflow 2.5 by Amir Hossini:
+ - Addition of ImageDataGenerator
+ - Split Function
+ - Custom Callbacks: min accuracy
 """
 ## Libraries
 import matplotlib.pyplot as plt
