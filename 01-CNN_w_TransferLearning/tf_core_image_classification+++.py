@@ -96,7 +96,15 @@ def model_compile(num_classes):
     ])
     print(model.summary())
 
-    model.compile(optimizer='adam',
+    initial_learning_rate = 0.1
+
+    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate,
+        decay_steps=100000,
+        decay_rate=0.96,
+        staircase=True)
+
+    model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule),
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
     """

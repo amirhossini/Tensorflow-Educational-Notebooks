@@ -27,7 +27,6 @@ from tensorflow.keras.models import Sequential
 import pathlib
 
 ## GPU availability
-print("Num CPUs Available: ", len(tf.config.list_physical_devices('CPU')))
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 ## Folder setup
@@ -43,7 +42,6 @@ img_height       = 180
 img_width        = 180
 
 max_n_epochs     = 20
-min_accuracy     = 0.6
 
 ## Set random seed
 tf.random.set_seed=seed
@@ -52,8 +50,8 @@ tf.random.set_seed=seed
 class Callback_set(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs={}):
-        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.7):
-            print(f"\nReached 70% validation accuracy so cancelling training!")
+        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.8):
+            print(f"\nReached 80% validation accuracy so cancelling training!")
             self.model.stop_training = True
 
 def split_data(SOURCE, TRAINING, TESTING, SPLIT_SIZE, seed=42):
@@ -102,11 +100,10 @@ def model_compile(num_classes):
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
         initial_learning_rate,
         decay_steps=100000,
-        decay_rate=0.98,
+        decay_rate=0.96,
         staircase=True)
 
-    model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule)
-                  ,
+    model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule),
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
     """
