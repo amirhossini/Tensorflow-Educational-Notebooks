@@ -39,7 +39,6 @@ img_height       = 180
 img_width        = 180
 
 max_n_epochs     = 20
-min_accuracy     = 0.6
 
 ## Set random seed
 tf.random.set_seed=seed
@@ -48,8 +47,8 @@ tf.random.set_seed=seed
 class Callback_set(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs={}):
-        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.7):
-            print(f"\nReached 70% validation accuracy so cancelling training!")
+        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.8):
+            print(f"\nReached 80% validation accuracy so cancelling training!")
             self.model.stop_training = True
 
 def split_data(SOURCE, TRAINING, TESTING, SPLIT_SIZE, seed=42):

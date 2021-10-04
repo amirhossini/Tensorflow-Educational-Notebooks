@@ -50,8 +50,8 @@ tf.random.set_seed=seed
 class Callback_set(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs={}):
-        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.8):
-            print(f"\nReached 80% validation accuracy so cancelling training!")
+        if (logs.get('accuracy') is not None and logs.get('val_accuracy') > 0.9):
+            print(f"\nReached 90% validation accuracy so cancelling training!")
             self.model.stop_training = True
 
 def split_data(SOURCE, TRAINING, TESTING, SPLIT_SIZE, seed=42):
@@ -95,13 +95,13 @@ def model_compile(num_classes):
     ])
     print(model.summary())
 
-    initial_learning_rate = 0.1
+    initial_learning_rate = 0.01
 
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
         initial_learning_rate,
         decay_steps=100000,
-        decay_rate=0.96,
-        staircase=True)
+        decay_rate=0.99
+    )
 
     model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule),
                   loss='categorical_crossentropy',
