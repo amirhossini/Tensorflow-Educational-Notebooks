@@ -9,6 +9,7 @@ Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
  - Custom Callbacks: min required accuracy
  - Addition of image augmentation
  - Addition of drop-out
+ - Addition of variable learning rate
 """
 ## Libraries
 import matplotlib.pyplot as plt
@@ -26,6 +27,7 @@ from tensorflow.keras.models import Sequential
 import pathlib
 
 ## GPU availability
+print("Num CPUs Available: ", len(tf.config.list_physical_devices('CPU')))
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 ## Folder setup
@@ -95,7 +97,16 @@ def model_compile(num_classes):
     ])
     print(model.summary())
 
-    model.compile(optimizer='adam',
+    initial_learning_rate = 0.1
+
+    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate,
+        decay_steps=100000,
+        decay_rate=0.98,
+        staircase=True)
+
+    model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule)
+                  ,
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
     """

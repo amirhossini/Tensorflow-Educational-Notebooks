@@ -9,6 +9,7 @@ Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
  - Custom Callbacks: min required accuracy
  - Addition of image augmentation
  - Addition of drop-out
+ - Addition of variable learning rate
 """
 ## Libraries
 import matplotlib.pyplot as plt
