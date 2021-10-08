@@ -50,11 +50,19 @@ max_n_epochs     = 20
 min_accuracy     = 0.6
 
 # Get pre-trained weights
+"""
 os.makedirs(pret_folder, exist_ok=True)
+
+# Web-get TL weights --> execute in CLI (Conda)
+cd ./pretrained_weights
+wget https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5 
+cd ..
+
+Web-get TL weights --> execute in Jupyter NB
 !wget --no-check-certificate \
     https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5 \
     -O os.path.join(pret_folder,inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5)
-
+"""
 # ## Set random seed
 # tf.random.set_seed=seed
 #
