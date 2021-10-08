@@ -47,8 +47,8 @@ seed             = 42
 split_size       = 0.8
 batch_size_train = 32
 batch_size_valid = 16
-img_height       = 180
-img_width        = 180
+img_height       = 150 # Adjust to conform to Inception Input Layer 180 --> 150
+img_width        = 150 # Adjust to conform to Inception Input Layer 180 --> 150
 
 max_n_epochs     = 20
 min_accuracy     = 0.6
