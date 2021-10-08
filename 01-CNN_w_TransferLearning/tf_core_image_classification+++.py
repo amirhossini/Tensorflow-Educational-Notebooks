@@ -132,39 +132,6 @@ def tl_model_compile(num_classes, pre_trained_model, last_output, dropout_rate=0
     print(model.summary())
     return model
 
-# def model_compile(num_classes):
-#     model = Sequential([
-#         layers.Conv2D(16, 3, padding='same', activation='relu', input_shape=(img_height, img_width, 3)),
-#         layers.MaxPooling2D(),
-#         layers.Conv2D(32, 3, padding='same', activation='relu'),
-#         layers.MaxPooling2D(),
-#         layers.Conv2D(64, 3, padding='same', activation='relu'),
-#         layers.MaxPooling2D(),
-#         layers.Flatten(),
-#         layers.Dense(256, activation='relu'),
-#         layers.Dropout(0.5),
-#         layers.Dense(num_classes, activation=tf.keras.activations.softmax)
-#     ])
-#     print(model.summary())
-#
-#     initial_learning_rate = 0.1
-#
-#     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-#         initial_learning_rate,
-#         decay_steps=100000,
-#         decay_rate=0.96,
-#         staircase=True)
-#
-#     model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=lr_schedule),
-#                   loss='categorical_crossentropy',
-#                   metrics=['accuracy'])
-#     """
-#     Attention must be paid to application of sparse_categorical vs categorical_cross_entropy for loss functions
-#     when working with image generators:
-#     https://stackoverflow.com/questions/49161174/tensorflow-logits-and-labels-must-have-the-same-first-dimension
-#     """
-#     return model
-#
 ## Load Data
 
 dataset_url = "https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz"
