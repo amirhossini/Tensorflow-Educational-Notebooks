@@ -12,7 +12,6 @@ Available as "C2_W4_Assignment.ipynb" as assignment 4 for Course 2 of Tensorflow
 
 Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
 - get_data function
-- addition of transfer learning
  """
 ## Libraries
 import matplotlib.pyplot as plt
@@ -57,34 +56,6 @@ tl_img_height    = 150 # Adjusted to conform to Inception Input Layer: 150
 tl_img_width     = 150 # Adjusted to conform to Inception Input Layer: 150
 
 max_n_epochs     = 20
-
-# Get pre-trained weights
-"""
-os.makedirs(pret_folder, exist_ok=True)
-
-# Web-get TL weights --> execute in CLI (Conda)
-cd ./pretrained_weights
-wget https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5 
-cd ..
-
-Web-get TL weights --> execute in Jupyter NB
-!wget --no-check-certificate \
-    https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5 \
-    -O os.path.join(pret_folder,inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5)
-"""
-path_inception     = os.path.join(pret_folder,'inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5')
-local_weights_file = path_inception
-pre_trained_model = InceptionV3(input_shape=(150,150,3),
-                                include_top=False,
-                                weights=None)
-
-pre_trained_model.load_weights(local_weights_file)
-for layer in pre_trained_model.layers:
-    layer.trainable=False
-print(pre_trained_model.summary())
-last_used_layer  = pre_trained_model.get_layer('mixed7')
-print(f'last layer output shape: {last_used_layer.output_shape}')
-last_used_output = last_used_layer.output
 
 ## Set random seed
 tf.random.set_seed=seed
@@ -135,20 +106,6 @@ def model_compile(num_classes,img_height, img_width):
                   metrics=['accuracy'])
     return model
 
-def tl_model_compile(num_classes, pre_trained_model, last_output, dropout_rate=0.2):
-    x = layers.Flatten()(last_output)
-    x = layers.Dense(1024, activation = 'relu')(x)
-    x = layers.Dropout(dropout_rate)(x)
-    x = layers.Dense(num_classes, activation='sigmoid')(x)
-
-    model = Model(pre_trained_model.input, x)
-
-    model.compile(optimizer=RMSprop(lr=1e-4),
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
-    print(model.summary())
-    return model
-
 ## Load Data
 path_sign_mnist_train = f"{os.getcwd()}/datasets/sign_mnist/sign_mnist_train.csv"
 path_sign_mnist_test = f"{os.getcwd()}/datasets/sign_mnist/sign_mnist_test.csv"
@@ -182,10 +139,30 @@ train_datagen = ImageDataGenerator(
 
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
-print(type(training_labels))
-
+## Train model
 train_gen = train_datagen.flow(training_images,training_labels,batch_size=64)
 test_gen  = test_datagen.flow(testing_images,testing_labels,batch_size=64)
 
-model_1   = model_compile(num_classes,img_height,img_width)
-history   = model_1.fit(train_gen, validation_data=test_gen,epochs=20)
+model   = model_compile(num_classes,img_height,img_width)
+history = model.fit(train_gen, validation_data=test_gen,epochs=20)
+
+# Plot the chart for accuracy and loss on both training and validation
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs = range(len(acc))
+
+plt.plot(epochs, acc, 'r', label='Training accuracy')
+plt.plot(epochs, val_acc, 'b', label='Validation accuracy')
+plt.title('Training and validation accuracy')
+plt.legend()
+plt.figure()
+
+plt.plot(epochs, loss, 'r', label='Training Loss')
+plt.plot(epochs, val_loss, 'b', label='Validation Loss')
+plt.title('Training and validation loss')
+plt.legend()
+
+plt.show()
