@@ -88,7 +88,6 @@ vectorize_layer = TextVectorization(
     output_mode='int',
     output_sequence_length=sequence_length
 )
-
 text_ds = train_ds.map(lambda x, y: x)
 vectorize_layer.adapt(text_ds)
 
