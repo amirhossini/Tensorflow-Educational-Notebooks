@@ -3,7 +3,7 @@ Original Version from tensorflow.org
 Available @ https://www.tensorflow.org/text/guide/word_embeddings
 
 Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
- -
+ - TextVectorization is called from layers.experimental.preprocessing
 """
 ## Libraries
 import matplotlib.pyplot as plt
@@ -92,26 +92,46 @@ text_ds = train_ds.map(lambda x, y: x)
 vectorize_layer.adapt(text_ds)
 
 ## Model compile
+embedding_dim=16
+model = Sequential([
+  vectorize_layer,
+  Embedding(vocab_size, embedding_dim, name="embedding"),
+  GlobalAveragePooling1D(),
+  Dense(16, activation='relu'),
+  Dense(1)
+])
 
-#
-# acc = history.history['accuracy']
-# val_acc = history.history['val_accuracy']
-#
-# loss = history.history['loss']
-# val_loss = history.history['val_loss']
-#
-# epochs_range = range(len(acc))
-#
-# plt.figure(figsize=(10, 4))
-# plt.subplot(1, 2, 1)
-# plt.plot(epochs_range, acc, label='Training Accuracy')
-# plt.plot(epochs_range, val_acc, label='Validation Accuracy')
-# plt.legend(loc='lower right')
-# plt.title('Training and Validation Accuracy')
-#
-# plt.subplot(1, 2, 2)
-# plt.plot(epochs_range, loss, label='Training Loss')
-# plt.plot(epochs_range, val_loss, label='Validation Loss')
-# plt.legend(loc='upper right')
-# plt.title('Training and Validation Loss')
-# plt.show()
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="logs")
+
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+history = model.fit(train_ds,
+                    validation_data=val_ds,
+                    epochs=15,
+                    callbacks=[tensorboard_callback])
+
+print(model.summary())
+
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs_range = range(len(acc))
+
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(epochs_range, acc, label='Training Accuracy')
+plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.title('Training and Validation Accuracy')
+
+plt.subplot(1, 2, 2)
+plt.plot(epochs_range, loss, label='Training Loss')
+plt.plot(epochs_range, val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.title('Training and Validation Loss')
+plt.show()
