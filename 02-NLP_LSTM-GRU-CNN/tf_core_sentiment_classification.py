@@ -13,6 +13,7 @@ import io
 import re
 import random
 import shutil
+import string
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -20,7 +21,7 @@ from tensorflow.keras import Model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
-#from tensorflow.keras.layers import TextVectorization
+from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
 
 ## GPU availability
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
@@ -44,8 +45,7 @@ class Callback_set(tf.keras.callbacks.Callback):
 def custom_standardization(input_data):
   lowercase = tf.strings.lower(input_data)
   stripped_html = tf.strings.regex_replace(lowercase, '<br />', ' ')
-  return tf.strings.regex_replace(stripped_html,
-                                  '[%s]' % re.escape(string.punctuation), '')
+  return tf.strings.regex_replace(stripped_html, '[%s]' % re.escape(string.punctuation), '')
 
 ## Folder setup & load data
 url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
@@ -82,7 +82,7 @@ train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 ## Text vectorization
-vectorize_layer = tf.keras.layers.TextVectorization(
+vectorize_layer = TextVectorization(
     standardize=custom_standardization,
     max_tokens=vocab_size,
     output_mode='int',
@@ -91,6 +91,8 @@ vectorize_layer = tf.keras.layers.TextVectorization(
 
 text_ds = train_ds.map(lambda x, y: x)
 vectorize_layer.adapt(text_ds)
+
+## Model compile
 
 #
 # acc = history.history['accuracy']
