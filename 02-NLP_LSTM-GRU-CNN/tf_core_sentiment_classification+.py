@@ -100,8 +100,8 @@ model = Sequential([
   Embedding(vocab_size, embedding_dim, name="embedding"),
   Bidirectional(LSTM(64, return_sequences=True)),
   Bidirectional(LSTM(32)),
-  Dropout(0.2),
   Dense(64, activation='relu'),
+  Dropout(0.2),
   Dense(1, activation='sigmoid')
 ])
 
