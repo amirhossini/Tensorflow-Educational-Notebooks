@@ -4,7 +4,8 @@ Available @ https://www.tensorflow.org/text/guide/word_embeddings
 
 Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
  - TextVectorization is called from layers.experimental.preprocessing
- - 2 Layers of LSTM are added & increased Dense layer to 64
+ - 2 Layers of LSTM are added & increased Dense layer to 64 + 20% dropout rate
+ - Added pretrained Embedding (GloVe)
 """
 ## Libraries
 import matplotlib.pyplot as plt
@@ -22,8 +23,9 @@ from tensorflow.keras import Model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
-from tensorflow.keras.layers import Bidirectional, LSTM
+from tensorflow.keras.layers import Bidirectional, LSTM, Dropout
 from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+
 
 ## GPU availability
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
@@ -93,6 +95,22 @@ vectorize_layer = TextVectorization(
 text_ds = train_ds.map(lambda x, y: x)
 vectorize_layer.adapt(text_ds)
 
+## Load pre-trained model
+# pretrained_models\GloVe100
+# embeddings_index = {};
+# with open('./glove.6B.100d.txt') as f:
+#     for line in f:
+#         values = line.split();
+#         word = values[0];
+#         coefs = np.asarray(values[1:], dtype='float32');
+#         embeddings_index[word] = coefs;
+#
+# embeddings_matrix = np.zeros((vocab_size+1, embedding_dim));
+# for word, i in word_index.items():
+#     embedding_vector = embeddings_index.get(word);
+#     if embedding_vector is not None:
+#         embeddings_matrix[i] = embedding_vector;
+
 ## Model compile
 embedding_dim=16
 model = Sequential([
@@ -101,6 +119,7 @@ model = Sequential([
   Bidirectional(LSTM(64, return_sequences=True)),
   Bidirectional(LSTM(32)),
   Dense(64, activation='relu'),
+  Dropout(0.2),
   Dense(1, activation='sigmoid')
 ])
 
