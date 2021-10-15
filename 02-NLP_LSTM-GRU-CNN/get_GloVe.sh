@@ -8,4 +8,4 @@ gdown --id 1W5vZy2etitAblLdFn8_DxnsQKzfFJ98g
 
 cd ../../
 
-conda deactivate
+deactivate
