@@ -1,5 +1,5 @@
 """
-Original Version from coursera.org
+Original Version from coursera.org (assignments)
 Available @ https://www.coursera.org/learn/natural-language-processing-tensorflow/ungradedLti/zz2wv/optional-assignment-exploring-overfitting-in-nlp
 
 Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
