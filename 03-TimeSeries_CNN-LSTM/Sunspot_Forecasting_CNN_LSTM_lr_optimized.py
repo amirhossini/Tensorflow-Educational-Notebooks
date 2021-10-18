@@ -1,6 +1,6 @@
 """
 Original Version from coursera.org
-Available @ https://www.coursera.org/learn/natural-language-processing-tensorflow/home/week/3
+Available @ https://www.coursera.org/learn/tensorflow-sequences-time-series-and-prediction/
 
 Recreation in Tensorflow 2.5 (& Python 3.8) by Amir Hossini:
  - 
