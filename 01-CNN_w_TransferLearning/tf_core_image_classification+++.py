@@ -35,6 +35,8 @@ from tensorflow.keras.applications.inception_v3 import InceptionV3
 
 ## GPU availability
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
 
 print(os.getcwd())
 ## Folder setup
@@ -122,7 +124,7 @@ def tl_model_compile(num_classes, pre_trained_model, last_output, dropout_rate=0
     x = layers.Flatten()(last_output)
     x = layers.Dense(1024, activation = 'relu')(x)
     x = layers.Dropout(dropout_rate)(x)
-    x = layers.Dense(num_classes, activation='sigmoid')(x)
+    x = layers.Dense(num_classes, activation=tf.keras.activations.softmax)(x)
 
     model = Model(pre_trained_model.input, x)
 
