@@ -35,6 +35,8 @@ from tensorflow.keras.applications.inception_v3 import InceptionV3
 
 ## GPU availability
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
 
 print(os.getcwd())
 ## Folder setup
@@ -47,8 +49,8 @@ seed             = 42
 split_size       = 0.8
 batch_size_train = 32
 batch_size_valid = 16
-img_height       = 150 # Adjust to conform to Inception Input Layer 180 --> 150
-img_width        = 150 # Adjust to conform to Inception Input Layer 180 --> 150
+img_height       = 180
+img_width        = 180
 
 max_n_epochs     = 20
 min_accuracy     = 0.6
@@ -69,9 +71,10 @@ Web-get TL weights --> execute in Jupyter NB
 """
 path_inception     = os.path.join(pret_folder,'inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5')
 local_weights_file = path_inception
-pre_trained_model = InceptionV3(input_shape=(150,150,3),
+pre_trained_model = InceptionV3(input_shape=(180,180,3),
                                 include_top=False,
-                                weights=None)
+                                weights=None # set to None as pre-trained weights are provided
+                                )
 
 pre_trained_model.load_weights(local_weights_file)
 for layer in pre_trained_model.layers:
@@ -122,7 +125,7 @@ def tl_model_compile(num_classes, pre_trained_model, last_output, dropout_rate=0
     x = layers.Flatten()(last_output)
     x = layers.Dense(1024, activation = 'relu')(x)
     x = layers.Dropout(dropout_rate)(x)
-    x = layers.Dense(num_classes, activation='sigmoid')(x)
+    x = layers.Dense(num_classes, activation=tf.keras.activations.softmax)(x)
 
     model = Model(pre_trained_model.input, x)
 
