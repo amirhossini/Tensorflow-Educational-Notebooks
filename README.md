@@ -4,7 +4,7 @@ __A collection of useful Tensorflow workflows and working examples accompanied w
 _Parts of this collection can prove useful for preparation for TensorFlow Developer Certification Exam._ 
 
 Amir Hossini <br>
-2021 - 2022 <br>
+2021 <br>
 ![image](https://user-images.githubusercontent.com/91625030/144555506-cdfd55e5-9fe7-478f-a7c6-1926229218ca.png)
 _________________________________________________________________________________________________________________
 
