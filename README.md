@@ -12,5 +12,5 @@ ________________________________________________________________________________
 
 [  CNN with Transfer Learning  ](https://github.com/amirhossini/Tensorflow-Educational-Notebooks/tree/main/01-CNN_w_TransferLearning) is a library of Keras code and Tensorflow workflows for in-memory image augmentation as well as transfer learning for image classification. The pre-trained model _InceptionV3_ with custom pre-trained weights is used in transfer learning set-up.
 
-
+[  NLP_LSTM-GRU-CNN  ](https://github.com/amirhossini/Tensorflow-Educational-Notebooks/tree/main/02-NLP_LSTM-GRU-CNN) is a library involving various different examples in application of deep learning models for Natural Language Processing (NLP). The provided workflows include (1) an example of processing a JSON data file for sarcasm classification and feeding it into a LSTM model with Embedding layer; (2) an example of Transfer Learning based on GloVe; and (3) IMDB movie reviews sentiment classification with examples of DNN and bi-directional LSTM with Embedding layers.
 
